@@ -1,7 +1,6 @@
 $input_folder = Join-Path $PSScriptRoot "Arquivos"
 $output_file = Join-Path $PSScriptRoot "resultado.html"
 
-# Obtém a data atual do sistema
 $currentDate = Get-Date
 $year = $currentDate.ToString("yyyy")
 $month = $currentDate.ToString("MM")
