@@ -39,7 +39,7 @@ Get-ChildItem -Path $input_folder -Filter "*.pdf" | ForEach-Object {
         { param($match) $match.Groups[1].Value.ToUpper() }
     )
 
-    $html_line = "<li><a href='//www.tjrs.jus.br/static/2024/12/$clean_file_name'>$base_name</a></li>"
+    $html_line = "<li><a href='//www.tjrs.jus.br/static/2025/01/$clean_file_name'>$base_name</a></li>"
     
     $html_line | Out-File -FilePath $output_file -Append -Encoding UTF8
 
