@@ -1,8 +1,15 @@
 $input_folder = Join-Path $PSScriptRoot "Arquivos"
 $output_file = Join-Path $PSScriptRoot "resultado.html"
 
+# Obtém a data atual do sistema
+$currentDate = Get-Date
+$year = $currentDate.ToString("yyyy")
+$month = $currentDate.ToString("MM")
+
 Write-Host "Caminho da pasta de entrada: $input_folder"
 Write-Host "Arquivo de saída: $output_file"
+Write-Host "Ano atual: $year"
+Write-Host "Mês atual: $month"
 
 if (-Not (Test-Path $input_folder)) {
     Write-Host "ERRO: A pasta de entrada não foi encontrada!" -ForegroundColor Red
@@ -39,7 +46,7 @@ Get-ChildItem -Path $input_folder -Filter "*.pdf" | ForEach-Object {
         { param($match) $match.Groups[1].Value.ToUpper() }
     )
 
-    $html_line = "<li><a href='//www.tjrs.jus.br/static/2025/01/$clean_file_name'>$base_name</a></li>"
+    $html_line = "<li><a href='//www.tjrs.jus.br/static/$year/$month/$clean_file_name'>$base_name</a></li>"
     
     $html_line | Out-File -FilePath $output_file -Append -Encoding UTF8
 
