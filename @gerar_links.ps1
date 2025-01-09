@@ -25,6 +25,30 @@ function Remove-Acentos {
     return $string
 }
 
+function Convert-ToPascalCase {
+    param($string)
+    
+    $excludedWords = @('das', 'da', 'dos', 'do', 'de')
+    
+    $words = $string -split '-'
+    
+    for ($i = 0; $i -lt $words.Length; $i++) {
+        $word = $words[$i].ToLower()
+        
+        if ($i -eq 0 -or -not ($excludedWords -contains $word)) {
+            $words[$i] = [regex]::Replace(
+                $word,
+                '^([a-z])',
+                { param($match) $match.Groups[1].Value.ToUpper() }
+            )
+        } else {
+            $words[$i] = $word
+        }
+    }
+    
+    return $words -join '-'
+}
+
 Get-ChildItem -Path $input_folder -Filter "*.pdf" | ForEach-Object {
     $file_name = $_.Name
     $base_name = $_.BaseName
@@ -36,14 +60,10 @@ Get-ChildItem -Path $input_folder -Filter "*.pdf" | ForEach-Object {
     $clean_file_name = $clean_file_name -replace '[^a-zA-Z0-9\.\-]', ''
     
     $clean_file_name = $clean_file_name -replace '-+', '-'
-    
+
     $clean_file_name = $clean_file_name.Trim('-')
 
-    $clean_file_name = [regex]::Replace(
-        $clean_file_name.ToLower(),
-        '^([a-z])',
-        { param($match) $match.Groups[1].Value.ToUpper() }
-    )
+    $clean_file_name = Convert-ToPascalCase -string $clean_file_name
 
     $html_line = "<li><a href='//www.tjrs.jus.br/static/$year/$month/$clean_file_name'>$base_name</a></li>"
     
